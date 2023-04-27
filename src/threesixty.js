@@ -75,19 +75,28 @@ class ThreeSixty {
 
   next() {
     this.goto(this.#options.inverted ? this.#index - 1 : this.#index + 1);
+
+    const nextEvent = new Event('next');
+    this.dispatchEvent(nextEvent);
   }
 
   prev() {
     this.goto(this.#options.inverted ? this.#index + 1 : this.#index - 1);
+
+    const prevEvent = new Event('prev');
+    this.dispatchEvent(prevEvent);
   }
 
   goto(index) {
     this.#index = (this.#options.count + index) % this.#options.count;
 
     this._update();
+
+    const gotoEvent = new Event('goto');
+    this.dispatchEvent(gotoEvent);
   }
 
-  play (reversed, maxloops) {
+  play(reversed, maxloops) {
     if (this.looping) {
       return;
     }
@@ -96,6 +105,9 @@ class ThreeSixty {
     this.#looping = true;
     this.#maxloops = maxloops;
     this.nloops = 0;
+
+    const playEvent = new Event('play');
+    this.dispatchEvent(playEvent);
   }
 
   stop () {
@@ -107,6 +119,9 @@ class ThreeSixty {
     this.#looping = false;
     this.#maxloops = null;
     this.nloops = 0;
+
+    const stopEvent = new Event('stop');
+    this.dispatchEvent(stopEvent);
   }
 
   toggle(reversed) {
